@@ -10,6 +10,9 @@ from rest_framework.authtoken.views import APIView, ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+
+from .permissions import IsAdminOrReadOnly
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -33,11 +36,13 @@ class GroupViewSet(viewsets.ModelViewSet):
 class CarreraViewSet(viewsets.ModelViewSet):
     queryset = Carrera.objects.all()
     serializer_class = CarreraSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAdminOrReadOnly]
 
 class MateriaViewSet(viewsets.ModelViewSet):
     queryset = Materia.objects.all()
     serializer_class = MateriaSerializer
-
+    permission_classes = [IsAdminOrReadOnly]
 class AlumnoViewSet(viewsets.ModelViewSet):
     queryset = Alumno.objects.all()
     serializer_class = AlumnoSerializer
@@ -82,3 +87,29 @@ class RegisterView(APIView):
                 'detail': 'User registered successfully. Log in to obtain the token.'
             }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET', 'PATCH'])
+@permission_classes([IsAuthenticated])
+def me (request):
+    user = request.user
+    if request.method == 'GET':
+        return Response({
+            'id': user.id,
+            'username': user.username,
+            'email': user.email,
+            'is_staff': user.is_staff
+        })
+
+    data = request.data
+    if 'email' in data:
+        if User.objects.filter(email__iexact=data['email']).exclude(pk=user.pk).exists():
+            return Response({'error': 'Email is already in use.'}, status=status.HTTP_400_BAD_REQUEST)
+    if 'username' in data:
+        if User.objects.filter(username__iexact=data['username']).exclude(pk=user.pk).exists():
+            return Response({'error': 'Username is already in use.'}, status=status.HTTP_400_BAD_REQUEST)
+    user.save()
+    return Response({
+        'id': user.id,
+        'username': user.username,
+        'email': user.email,
+    })

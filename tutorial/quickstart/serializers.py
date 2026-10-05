@@ -38,6 +38,8 @@ class AlumnoSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class InscripcionSerializer(serializers.ModelSerializer):
+    ciclo = serializers.CharField(required=True, allow_blank=False)
+    
     class Meta:
         model = Inscripcion
         fields = '__all__'
@@ -66,3 +68,4 @@ class RegisterSerializer(serializers.ModelSerializer):
             password=validated_data['password']
         )
         return user
+
