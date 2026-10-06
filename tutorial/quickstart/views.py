@@ -1,6 +1,7 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from django.contrib.auth.models import Group, User
 from rest_framework import permissions, viewsets, filters
+from rest_framework.decorators import api_view, permission_classes
 
 from tutorial.quickstart.serializers import GroupSerializer, UserSerializer
 from .models import Carrera, Materia, Alumno, Inscripcion, Card

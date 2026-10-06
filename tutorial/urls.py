@@ -3,7 +3,7 @@ from django.urls import include, path
 from rest_framework import routers
 
 from tutorial.quickstart import views
-from .quickstart.views import CustomAuthToken, RegisterView
+from .quickstart.views import CustomAuthToken, RegisterView, me
 
 
 router = routers.DefaultRouter()
@@ -19,4 +19,5 @@ urlpatterns = [
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
     path("api-token-auth/", CustomAuthToken.as_view(), name="api_token_auth"),
     path("api-register/", views.RegisterView.as_view(), name="api_register"),
+    path('me/', me, name='me')
 ]
