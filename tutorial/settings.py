@@ -41,12 +41,14 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'django_filters',
     'tutorial.quickstart',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -141,3 +143,13 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
 }
+
+# CORS
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",      # React con Create React App / Vite
+    "http://127.0.0.1:3000",
+    "http://localhost:8081",      # React Native Web (Metro)
+    "http://127.0.0.1:8081",
+    "http://localhost:19006",     # Expo Web
+    "http://127.0.0.1:19006",
+]
