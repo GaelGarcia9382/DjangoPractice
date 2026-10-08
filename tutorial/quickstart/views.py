@@ -114,3 +114,22 @@ def me (request):
         'username': user.username,
         'email': user.email,
     })
+
+class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        request.user.auth_token.delete()
+        return Response({"detail": "User logged out successfully."}, status=status.HTTP_204_NO_CONTENT)
+
+class ResetTokenView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        Token.objects.filter(user=request.user).delete()
+        # Create a new token
+        token = Token.objects.create(user=request.user)
+        return Response({
+            'token': token.key,
+            "detail":" Token reset successfully."
+        }, status=status.HTTP_200_OK)
