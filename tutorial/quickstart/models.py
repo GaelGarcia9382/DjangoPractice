@@ -1,16 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# Create your models here.
-
-class Card(models.Model):
-    title = models.CharField(max_length=200)
-    image = models.URLField(max_length=1000)
-    description = models.TextField()
-
-
-    def __str__(self):
-        return self.title
 
 class Carrera(models.Model):
     nombre = models.CharField(max_length=100)
@@ -51,3 +41,11 @@ class Inscripcion(models.Model):
 
     def __str__(self):
         return f"{self.alumno} - {self.materia}"    
+
+class Card(models.Model):
+    title = models.CharField(max_length=200)
+    image = models.ImageField(upload_to='cards/', blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.title

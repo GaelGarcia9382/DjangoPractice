@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 
 from pathlib import Path
 
+from django.contrib.gis import db
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -153,3 +155,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:19006",     # Expo Web
     "http://127.0.0.1:19006",
 ]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = db.path.join(BASE_DIR, 'media')

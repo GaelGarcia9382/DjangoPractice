@@ -14,6 +14,7 @@ class CardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Card
         fields = '__all__'
+        read_only_fields = ['id']  # Make 'id' read-only
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
